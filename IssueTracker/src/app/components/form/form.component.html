@@ -1,0 +1,44 @@
+<app-header></app-header>
+<form #issueForm='ngForm' (ngSubmit)='onFormSubmit(issueForm)'>
+  <div class="container">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Issue Desription</label>
+      <input type="text" hidden name="id" [(ngModel)]='issue.id'>
+      <input type="text" name='description' #issueDescription='ngModel' [(ngModel)]='issue.description' class="form-control" placeholder="Enter Issue Desription"
+        required [class.is-invalid]='issueDescription.errors && issueDescription.touched'>
+      <div class="invalid-feedback" [hidden]='!issueDescription.errors?.required '>Description is required</div>
+    </div>
+    <div class="form-group">
+      <label for="severity">Severity</label>
+      <select required class="form-control" name='severity' #issueSeverity='ngModel' id="severity" [(ngModel)]='issue.severity'
+        [class.is-invalid]='issueSeverity.errors && issueSeverity.touched'>
+        <option>Minor</option>
+        <option>Major</option>
+        <option>Critical</option>
+      </select>
+      <div class="invalid-feedback" [hidden]='!issueSeverity.errors?.required'>Severity is required</div>
+    </div>
+    <div class="form-group">
+      <label for="status">Status</label>
+      <select required class="form-control" (change)="onStatusChange($event)" name='status' #issueStatus='ngModel' id="status"
+        [(ngModel)]='issue.status' [class.is-invalid]='issueStatus.errors && issueStatus.touched'>
+        <option>Open</option>
+        <option>In Progress</option>
+        <option>Closed</option>
+      </select>
+      <div class="invalid-feedback" [hidden]='!issueStatus.errors?.required'>Status is required</div>
+    </div>
+    <div class="form-group" *ngIf='showResolved'>
+      <label for="datepicker">Resolved Date</label>
+      <input type="date" required [class.is-invalid]='issueResolved.errors && issueResolved.touched' #issueResolved='ngModel' id='resolved'
+        placeholder='e.g. Sun Jul 29 2018' name='resolved' class="form-control" [ngModel]="issue.resolved | date: 'yyyy-MM-dd'"
+        (ngModelChange)="issue.resolved = $event">
+      <div class="invalid-feedback" [hidden]='!issueResolved.errors?.required'>Date is required</div>
+    </div>
+    <input type="text" hidden name='created' [(ngModel)]='issue.created'>
+    <button type="button" class="btn btn-success" type="submit" [disabled]='!issueForm.form.valid'>
+      {{ editMode ? 'Update' : 'Add'}}
+    </button>
+    <button type="button" class="btn btn-danger" routerLink='/'>Cancel</button>
+  </div>
+</form>

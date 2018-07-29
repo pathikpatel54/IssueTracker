@@ -1,0 +1,13 @@
+.table-dark {
+    color: white;
+}
+.input-group{
+    width: 350px;
+}
+.btn-info{
+    margin-right: 1rem;
+}
+.flex-container{
+    display: flex;
+    justify-content: space-between;
+}

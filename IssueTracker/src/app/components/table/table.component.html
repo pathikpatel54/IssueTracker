@@ -1,0 +1,72 @@
+<div class="flex-container">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputGroupSelect01">Filter Description</label>
+    </div>
+    <input type="text" [(ngModel)]='searchString' class="form-control">
+  </div>
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+      aria-expanded="false">
+      Columns
+    </button>
+    <div class="dropdown-menu dropdown-menu-right" style="padding-left: 25px;">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]='columnCheck.severityCheck' id="severityCheck" name="severityCheck">
+        <label class="custom-control-label" for="severityCheck">Severity</label>
+      </div>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]='columnCheck.statusCheck' id="statusCheck" name="severityCheck">
+        <label class="custom-control-label" for="statusCheck">Status</label>
+      </div>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]='columnCheck.createdCheck' id="createdCheck" name="severityCheck">
+        <label class="custom-control-label" for="createdCheck">Created</label>
+      </div>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]='columnCheck.resolvedCheck' id="resolvedCheck" name="severityCheck">
+        <label class="custom-control-label" for="resolvedCheck">Resolved</label>
+      </div>
+    </div>
+  </div>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col" *ngIf='multipleDelete'>
+        <input class="form-check-input" (change)='onAllSelectClick()' [checked]='allSelected' type="checkbox">
+      </th>
+      <th scope="col">#</th>
+      <th scope="col">Description</th>
+      <th scope="col" *ngIf='columnCheck.severityCheck'>Severity</th>
+      <th scope="col" *ngIf='columnCheck.statusCheck'>Status</th>
+      <th scope="col" *ngIf='columnCheck.createdCheck'>Created</th>
+      <th scope="col" *ngIf='columnCheck.resolvedCheck'>Resolved</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor='let issue of issues | filter: searchString'>
+      <th scope="row" *ngIf='multipleDelete'>
+        <input class="form-check-input" (change)='onCheckChange($event, issue.id)' [checked]='allSelected' type="checkbox" name="delete"
+          [value]='issue.id'>
+      </th>
+      <th scope="row">{{ issue.id }}</th>
+      <td>{{ issue.description }}</td>
+      <td *ngIf='columnCheck.severityCheck'>{{ issue.severity}}</td>
+      <td *ngIf='columnCheck.statusCheck'>{{ issue.status}}</td>
+      <td *ngIf='columnCheck.createdCheck'>{{ issue.created}}</td>
+      <td *ngIf='columnCheck.resolvedCheck'>{{ issue.resolved !== 'Invalid Date' ? issue.resolved : 'NA'}}</td>
+      <td>
+        <button type="button" class="btn btn-sm btn-info" routerLink='/issue/{{issue.id}}'>Edit</button>
+        <button type="button" class="btn btn-sm btn-danger" (click)='onDeleteClick(issue.id)'>
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<button type="button" class="btn btn-info" routerLink='/issue/new'>Add New Issue</button>
+<button type="button" class="btn btn-danger" (click)='onMultipleDeleteClick()'>{{ multipleDelete ? ' Delete Selected ' : 'Multiple Delete '}}</button>
+<button type="button" class="btn btn-success" *ngIf='multipleDelete' (click)='multipleDelete=false'>Cancel</button>

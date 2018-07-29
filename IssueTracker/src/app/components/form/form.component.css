@@ -1,0 +1,11 @@
+.container{
+    padding: 0px 20%;
+}
+.btn{
+    margin-top: 10px;
+}
+@media screen and (max-width: 1198px) {
+    .container{
+        padding: 0px 10%;
+    }
+}
